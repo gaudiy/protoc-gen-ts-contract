@@ -1,7 +1,7 @@
 version: v2
 
 modules:
-  - name: buf.build/winor30/protoc-gen-ts-contract
+  - name: buf.build/winor30-org/protoc-gen-ts-contract
     path: proto
 
 deps:
