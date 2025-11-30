@@ -1,0 +1,29 @@
+name: Buf Publish
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+
+permissions:
+  contents: read
+
+concurrency:
+  group: buf-publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: bufbuild/buf-action@v1
+        with:
+          input: packages/ts-contract-plugin
+          token: ${{ secrets.BUF_TOKEN }}
+          push: true
+          push_create_visibility: public

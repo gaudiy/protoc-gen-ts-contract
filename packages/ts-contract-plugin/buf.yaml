@@ -1,7 +1,8 @@
 version: v2
 
 modules:
-  - path: proto
+  - name: buf.build/winor30/protoc-gen-ts-contract
+    path: proto
 
 deps:
   # Pinned to match the @bufbuild/protovalidate 1.0.0 npm dependency.
