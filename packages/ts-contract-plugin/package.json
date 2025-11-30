@@ -1,0 +1,63 @@
+{
+  "name": "@winor30/protoc-gen-ts-contract",
+  "version": "0.1.0",
+  "description": "Generate TypeScript contract Input interfaces from protovalidate-enabled protobuf definitions.",
+  "type": "module",
+  "bin": {
+    "protoc-gen-ts-contract": "./dist/cli.js"
+  },
+  "main": "./dist/main.js",
+  "exports": {
+    ".": "./dist/main.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/winor30/protoc-gen-ts-contract.git"
+  },
+  "bugs": {
+    "url": "https://github.com/winor30/protoc-gen-ts-contract/issues"
+  },
+  "homepage": "https://github.com/winor30/protoc-gen-ts-contract#readme",
+  "author": "winor30",
+  "keywords": [
+    "protobuf",
+    "buf",
+    "protoc",
+    "typescript",
+    "protoc-plugin",
+    "protovalidate",
+    "codegen"
+  ],
+  "scripts": {
+    "proto:gen:validate": "buf generate --template buf.gen.yaml",
+    "build": "tsc -p tsconfig.build.json && node -e \"const fs=require('node:fs');const p='dist/cli.js';const s=fs.readFileSync(p,'utf8');if(!s.startsWith('#!')){fs.writeFileSync(p,'#!/usr/bin/env node\\n'+s);}\" && chmod +x dist/cli.js",
+    "clean": "rimraf dist",
+    "lint": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "pnpm run lint && pnpm run test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@bufbuild/protobuf": "2.10.1",
+    "@bufbuild/protoplugin": "2.10.1",
+    "@bufbuild/protovalidate": "1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "rimraf": "6.1.2",
+    "typescript": "5.9.3",
+    "vitest": "4.0.14"
+  },
+  "packageManager": "pnpm@10.24.0"
+}
