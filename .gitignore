@@ -1,0 +1,10 @@
+node_modules
+dist
+*.tsbuildinfo
+.DS_Store
+npm-debug.log*
+pnpm-debug.log*
+.turbo
+.vscode
+.serena
+example/gen
