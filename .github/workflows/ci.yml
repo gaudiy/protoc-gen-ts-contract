@@ -23,12 +23,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22.x
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10.24.0
-          run_install: false
+      - name: Setup pnpm
+        run: npm install -g pnpm@10.24.0
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Run lint
@@ -43,12 +39,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22.x
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10.24.0
-          run_install: false
+      - name: Setup pnpm
+        run: npm install -g pnpm@10.24.0
+      - name: Install buf CLI
+        run: npm install -g @bufbuild/buf@1.56.0
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Run tests
@@ -63,21 +57,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22.x
-          cache: pnpm
-          cache-dependency-path: pnpm-lock.yaml
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10.24.0
-          run_install: false
+      - name: Setup pnpm
+        run: npm install -g pnpm@10.24.0
+      - name: Install buf CLI
+        run: npm install -g @bufbuild/buf@1.56.0
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Run build
         run: pnpm build
-      - name: Buf lint/build
-        uses: bufbuild/buf-action@v1
-        with:
-          input: packages/ts-contract-plugin
-          push: false
-          lint: true
-          format: false
-          breaking: false
+      - name: Buf lint
+        run: buf lint packages/ts-contract-plugin

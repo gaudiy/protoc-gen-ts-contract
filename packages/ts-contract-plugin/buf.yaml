@@ -1,11 +1,9 @@
 version: v2
-
 modules:
-  - name: buf.build/winor30-org/protoc-gen-ts-contract
-    path: proto
-
-deps:
-  # Pinned to match the @bufbuild/protovalidate 1.0.0 npm dependency.
-  # buf dep update will fail while the vendored proto exists; refresh via
-  # `buf export buf.build/bufbuild/protovalidate:v1.0.0 --output proto`.
-  - buf.build/bufbuild/protovalidate:v1.0.0
+  - path: proto
+    name: buf.build/winor-org/protoc-gen-ts-contract
+lint:
+  use:
+    - DEFAULT
+  except:
+    - PACKAGE_VERSION_SUFFIX
