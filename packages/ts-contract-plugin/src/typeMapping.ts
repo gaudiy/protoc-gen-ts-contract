@@ -1,23 +1,11 @@
 import type { GeneratedFile, Printable } from "@bufbuild/protoplugin";
-import type {
-  DescEnum,
-  DescField,
-  DescFile,
-  DescMessage,
-  ScalarType,
-} from "@bufbuild/protobuf";
+import type { DescField, DescFile, DescMessage } from "@bufbuild/protobuf";
 import { scalarTypeScriptType } from "@bufbuild/protobuf/codegenv2";
-import {
-  generateContractFileName,
-  inputTypeName,
-  pbImportPath,
-} from "./naming.js";
-import type { PluginOptions } from "./options.js";
+import { generateContractFileName, inputTypeName } from "./naming.js";
 
 export interface FieldTypeContext {
   readonly file: DescFile;
   readonly gen: GeneratedFile;
-  readonly options: PluginOptions;
 }
 
 type ValueKind = "scalar" | "enum" | "message";
@@ -66,7 +54,7 @@ function valuePrintable(
       if (field.enum === undefined) {
         throw new Error("enum kind requires enum descriptor");
       }
-      return enumReference(field.enum, context);
+      return context.gen.importShape(field.enum);
     }
     case "message": {
       if (field.message === undefined) {
@@ -81,25 +69,12 @@ function valuePrintable(
   }
 }
 
-function enumReference(
-  enumDesc: DescEnum,
-  context: FieldTypeContext
-): Printable {
-  const target = pbImportPath(
-    context.file,
-    enumDesc.file,
-    context.options.pbOut
-  );
-  return context.gen.import(enumDesc.name, target, true);
-}
-
 function messageInputReference(
   message: DescMessage,
   context: FieldTypeContext
 ): Printable {
-  const wellKnown = wellKnownMessageReference(message, context);
-  if (wellKnown) {
-    return wellKnown;
+  if (message.file.proto.package === "google.protobuf") {
+    return context.gen.importShape(message);
   }
   if (message.file === context.file) {
     return inputTypeName(message);
@@ -110,18 +85,4 @@ function messageInputReference(
     ".js"
   )}`;
   return context.gen.import(symbol, target, true);
-}
-
-function wellKnownMessageReference(
-  message: DescMessage,
-  context: FieldTypeContext
-): Printable | undefined {
-  if (message.file.proto.package !== "google.protobuf") {
-    return undefined;
-  }
-  const typeName = message.typeName.split(".").pop();
-  if (typeName === "Timestamp") {
-    return context.gen.import("Timestamp", "@bufbuild/protobuf/wkt", true);
-  }
-  return undefined;
 }

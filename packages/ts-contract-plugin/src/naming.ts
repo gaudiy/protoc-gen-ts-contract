@@ -1,5 +1,4 @@
 import type { DescFile, DescMessage } from "@bufbuild/protobuf";
-import path from "node:path/posix";
 
 const PROTO_SUFFIX = /\.proto$/;
 
@@ -22,17 +21,4 @@ export function inputTypeName(message: DescMessage): string {
   const offset = pkg.length > 0 ? pkg.length + 1 : 0;
   const nameWithoutPackage = message.typeName.substring(offset);
   return `${nameWithoutPackage.replace(/\./g, "_")}Input`;
-}
-
-export function pbImportPath(
-  _fromFile: DescFile,
-  targetFile: DescFile,
-  pbOut: string
-): string {
-  const target = path
-    .normalize(
-      path.join(pbOut, targetFile.proto.name.replace(PROTO_SUFFIX, "_pb.js"))
-    )
-    .replace(/\.js$/, "");
-  return target.startsWith(".") ? target : `./${target}`;
 }

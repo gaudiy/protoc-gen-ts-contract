@@ -20,7 +20,7 @@ export function generateTs(schema: Schema<PluginOptions>, _target: "ts"): void {
 
     const messages = collectMessages(schema, file);
     for (const [index, message] of messages.entries()) {
-      printMessageInput(gen, file, message, validateExtension, schema.options);
+      printMessageInput(gen, file, message, validateExtension);
 
       // Add a blank line between messages, but not after the last one
       // to avoid trailing empty lines in the generated file.
@@ -83,8 +83,7 @@ function printMessageInput(
   gen: GeneratedFile,
   file: DescFile,
   message: DescMessage,
-  extension: ReturnType<typeof resolveValidateFieldExtension>,
-  options: PluginOptions
+  extension: ReturnType<typeof resolveValidateFieldExtension>
 ): void {
   const interfaceName = inputTypeName(message);
   gen.print(gen.export("interface", interfaceName), " {");
@@ -100,7 +99,7 @@ function printMessageInput(
         ? false
         : isRequiredField(field, extension);
     const optionalMarker = required ? "" : "?";
-    const typePrintable = fieldTypePrintable(field, { file, gen, options });
+    const typePrintable = fieldTypePrintable(field, { file, gen });
     gen.print(`  ${field.localName}${optionalMarker}: `, typePrintable, ";");
   }
   gen.print("}");
