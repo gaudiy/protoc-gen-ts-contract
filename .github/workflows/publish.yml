@@ -26,7 +26,6 @@ jobs:
           node-version: 22.x
           registry-url: https://npm.pkg.github.com
           scope: "@gaudiy"
-          always-auth: true
       - name: Setup pnpm
         run: npm install -g pnpm@10.24.0
       - name: Install dependencies
@@ -39,4 +38,6 @@ jobs:
         run: pnpm -C packages/ts-contract-plugin build
 
       - name: Publish package
-        run: pnpm publish --filter @gaudiy/protoc-gen-ts-contract --workspace-root --provenance --access public --no-git-checks
+        run: pnpm publish --filter @gaudiy/protoc-gen-ts-contract --workspace-root --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
