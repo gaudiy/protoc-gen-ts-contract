@@ -18,7 +18,7 @@ const SKIP_PACKAGE_OPTION = "skip_pkg";
  * @throws Error on unknown options or empty `skip_pkg` value
  */
 export function parseOptions(
-  rawOptions: { key: string; value: string }[]
+  rawOptions: { key: string; value: string }[],
 ): PluginOptions {
   const skipPackages = new Set<string>();
   const unknownOptions: string[] = [];
@@ -34,7 +34,9 @@ export function parseOptions(
         break;
       }
       default:
-        unknownOptions.push(value && value.length > 0 ? `${key}=${value}` : key);
+        unknownOptions.push(
+          value && value.length > 0 ? `${key}=${value}` : key,
+        );
     }
   }
 

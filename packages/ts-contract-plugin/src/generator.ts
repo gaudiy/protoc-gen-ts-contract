@@ -53,7 +53,7 @@ function createPackageMatchers(patterns: readonly string[]): RegExp[] {
 
 function shouldSkipFile(
   file: DescFile,
-  packageMatchers: readonly RegExp[]
+  packageMatchers: readonly RegExp[],
 ): boolean {
   return packageMatchers.some((matcher) => matcher.test(file.proto.package));
 }
@@ -70,7 +70,7 @@ function collectMessages(schema: Schema, file: DescFile): DescMessage[] {
   return Array.from(schema.typesInFile(file))
     .filter(
       (type): type is DescMessage =>
-        type.kind === "message" && !isMapEntry(type)
+        type.kind === "message" && !isMapEntry(type),
     )
     .sort((a, b) => (a.typeName > b.typeName ? 1 : -1));
 }
@@ -83,7 +83,7 @@ function printMessageInput(
   gen: GeneratedFile,
   file: DescFile,
   message: DescMessage,
-  extension: ReturnType<typeof resolveValidateFieldExtension>
+  extension: ReturnType<typeof resolveValidateFieldExtension>,
 ): void {
   const interfaceName = inputTypeName(message);
   gen.print(gen.export("interface", interfaceName), " {");

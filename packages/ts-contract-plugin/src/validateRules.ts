@@ -13,13 +13,13 @@ import {
 const VALIDATE_FIELD_EXTENSION_NAME = "buf.validate.field";
 
 export function resolveValidateFieldExtension(
-  files: readonly DescFile[]
+  files: readonly DescFile[],
 ): typeof validateFieldExtension {
   const registry = createRegistry(file_buf_validate_validate, ...files);
   const extension = registry.getExtension(VALIDATE_FIELD_EXTENSION_NAME);
   if (!extension) {
     throw new Error(
-      `missing required extension ${VALIDATE_FIELD_EXTENSION_NAME}; ensure buf.build/bufbuild/protovalidate is available`
+      `missing required extension ${VALIDATE_FIELD_EXTENSION_NAME}; ensure buf.build/bufbuild/protovalidate is available`,
     );
   }
   return extension as typeof validateFieldExtension;
@@ -27,7 +27,7 @@ export function resolveValidateFieldExtension(
 
 export function isRequiredField(
   field: DescField,
-  extension: typeof validateFieldExtension
+  extension: typeof validateFieldExtension,
 ): boolean {
   if (!hasOption(field, extension)) {
     return false;
