@@ -12,7 +12,7 @@ type ValueKind = "scalar" | "enum" | "message";
 
 export function fieldTypePrintable(
   field: DescField,
-  context: FieldTypeContext
+  context: FieldTypeContext,
 ): Printable {
   const kind = field.fieldKind;
   switch (kind) {
@@ -41,7 +41,7 @@ export function fieldTypePrintable(
 function valuePrintable(
   kind: ValueKind,
   field: Pick<DescField, "scalar" | "enum" | "message">,
-  context: FieldTypeContext
+  context: FieldTypeContext,
 ): Printable {
   switch (kind) {
     case "scalar": {
@@ -71,7 +71,7 @@ function valuePrintable(
 
 function messageInputReference(
   message: DescMessage,
-  context: FieldTypeContext
+  context: FieldTypeContext,
 ): Printable {
   if (message.file.proto.package === "google.protobuf") {
     return context.gen.importShape(message);
@@ -82,7 +82,7 @@ function messageInputReference(
   const symbol = inputTypeName(message);
   const target = `./${generateContractFileName(message.file).replace(
     /\.ts$/,
-    ".js"
+    ".js",
   )}`;
   return context.gen.import(symbol, target, true);
 }

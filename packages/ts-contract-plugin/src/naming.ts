@@ -7,7 +7,7 @@ export function generateContractFileName(file: DescFile): string {
   const tsName = sourceName.replace(PROTO_SUFFIX, "_contract.ts");
   if (tsName.includes("..")) {
     throw new Error(
-      `refusing to generate contract outside package boundary: ${tsName}`
+      `refusing to generate contract outside package boundary: ${tsName}`,
     );
   }
   return tsName;
