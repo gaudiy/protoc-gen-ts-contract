@@ -73,7 +73,7 @@ function messageInputReference(
   message: DescMessage,
   context: FieldTypeContext,
 ): Printable {
-  if (message.file.proto.package === "google.protobuf") {
+  if (message.file.proto.package.startsWith("google.")) {
     return context.gen.importShape(message);
   }
   if (message.file === context.file) {
